@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keluar | MobilBagus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .logout-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .logout-box h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #1e1c1a;
+    }
+
+    .logout-box p {
+      margin-bottom: 2rem;
+      color: #555;
+    }
+
+    .logout-box a {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      background-color: #4a2ec9;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+
+    .logout-box a:hover {
+      background-color: #3720a5;
+    }
+
+    @media(max-width: 480px) {
+      .logout-box {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-box">
+    <h1>Anda telah berhasil keluar</h1>
+    <p>Terima kasih telah menggunakan MobilBagus.</p>
+    <a href="login.html">Masuk Kembali</a>
+  </div>
+</body>
+</html>

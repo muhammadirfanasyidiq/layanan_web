@@ -1,0 +1,94 @@
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1100ff;
+  padding: 10px 20px;
+  color: #fff;
+  font-family: sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header-left .menu-icon {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-dropdown {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.user-dropdown .dropdown-icon {
+  margin-left: 5px;
+  font-size: 14px;
+}
+/* end */
+
+/* Sidebar */
+#sidebar {
+  width: 250px;
+  position: fixed;
+  height: 100vh;
+  background-color: #1e1c1a;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+
+.nav-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  margin: 0;
+}
+
+/* Hover biru untuk sidebar item biasa (non-dropdown) */
+.nav-item > a.nav-link:hover {
+  background-color: #1e3cff; /* biru saat hover */
+  color: #ffffff; /* teks putih */
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+  background-color: #1e3cff !important; /* biru tua */
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.dropdown-item {
+  color: #ffffff !important; /* teks putih default */
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active {
+  background-color: #3b56ff !important; /* biru terang saat hover */
+  color: #ffffff !important; /* teks tetap putih */
+}
+
+/* admin.css */
+.sidebar-collapsed .main-content {
+  margin-left: 0 !important;
+}
+
+.layout-loading .main-content {
+  visibility: hidden;
+}

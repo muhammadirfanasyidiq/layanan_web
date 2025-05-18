@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Manajemen Mobil | MobilBagus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+     body {
+      display: flex;
+      min-height: 100vh;
+    }
+
+       .sidebar {
+      width: 240px;
+      background-color: #1e1c1a;
+      color: white;
+      padding: 1rem;
+      box-sizing: border-box;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+      position: absolute;
+      z-index: 1000;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .menu-toggle:hover {
+      background-color: #2c2a28;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: white;
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .menu-link:hover {
+      background-color: #2c2a28;
+    }
+
+    .submenu {
+      display: none;
+      flex-direction: column;
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .submenu a {
+      padding: 0.3rem 0.5rem;
+      border-radius: 5px;
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .submenu a:hover {
+      background-color: #3d3a36;
+    }
+
+    .submenu.show {
+      display: flex;
+    }
+
+    .submenu a.active {
+      background-color: #675cff;
+    }
+
+    .icon {
+      width: 20px;
+    }
+
+    .arrow {
+      font-size: 0.7rem;
+      transition: transform 0.3s;
+    }
+
+    .arrow.rotate {
+      transform: rotate(180deg);
+    }
+
+    .main {
+      flex: 1;
+      background-color: #f8eaea;
+      padding: 1rem 2rem;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .hamburger {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: white;
+      background: #4a2ec9;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+
+    .admin-btn {
+      color: white;
+      background: #4a2ec9;
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cards {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem;
+      border-radius: 10px;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .card-purple { background: #675cff; }
+    .card-brown { background: #a66d3a; }
+    .card-green { background: #84bc00; }
+
+    .card h3 { font-size: 1rem; }
+    .card h2 { font-size: 1.6rem; margin: 0.2rem 0; }
+
+    .chart-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+
+    .chart-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .chart-left {
+      width: 65%;
+    }
+
+    .chart-right {
+      width: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    .notifikasi {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .notifikasi h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .notif {
+      border-top: 1px solid #eee;
+      padding: 0.5rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif:first-child {
+      border-top: none;
+    }
+
+    .notif-label {
+      background: #675cff;
+      color: white;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 12px;
+    }
+
+    .notif-label.baru {
+      background: #a66d3a;
+    }
+
+    .notif-label.menunggu {
+      background: #84bc00;
+    }
+
+    .lihat-semua {
+      font-size: 0.8rem;
+      color: #4a2ec9;
+      text-decoration: none;
+      float: right;
+      margin-bottom: 0.5rem;
+    }
+
+    @media(max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        transform: none;
+        position: relative;
+      }
+
+      
+  }
+    .container {
+      display: flex;
+    }
+
+    iframe {
+      width: 240px;
+      height: 100vh;
+      border: none;
+    }
+
+    .main {
+      flex: 1;
+      background-color: #f8eaea;
+      padding: 1rem 2rem;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #675cff;
+      color: white;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .admin-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    select, button {
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .filter-button {
+      background: #675cff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      margin: 1rem 0;
+      font-weight: bold;
+      background: #675cff;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .cards {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: 300px;
+      position: relative;
+    }
+
+    .card h4 {
+      font-size: 0.9rem;
+      color: gray;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin: 0.3rem 0;
+    }
+
+    .price {
+      color: #675cff;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-details {
+      font-size: 0.85rem;
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      margin: 0.5rem 0;
+      color: #444;
+    }
+
+    .btn-detail {
+      display: block;
+      text-align: center;
+      background: #675cff;
+      color: white;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .card-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .card-actions button {
+      border: none;
+      padding: 0.3rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .edit {
+      background: yellow;
+    }
+
+    .delete {
+      background: red;
+      color: white;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .pagination button {
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      background: #ccc;
+      cursor: pointer;
+    }
+
+    .pagination button.active {
+      background: #675cff;
+      color: white;
+    }
+
+    .pagination button:disabled {
+      background: #eee;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+  <h1>MobilBagus</h1>
+  <div class="menu">
+    <div class="menu-item">
+      <a href="dashboard.html" class="menu-link"><span class="icon">🏠</span> Dashboard</a>
+    </div>
+
+    <div class="menu-item">
+      <a href="manajemen-mobil.html" class="menu-link"><span class="icon">🚗</span> Manajemen Mobil</a>
+    </div>
+
+    <div class="menu-item">
+      <div class="menu-toggle" onclick="toggleMenu('penjualan')">
+        <span class="menu-link"><span class="icon">📈</span> Penjualan</span>
+        <span class="arrow" id="arrow-penjualan">▼</span>
+      </div>
+      <div class="submenu" id="submenu-penjualan">
+        <a href="data-penjualan.html">Data Penjualan</a>
+        <a href="daftar-penjualan.html">Daftar Penjualan</a>
+        <a href="laporan.html">Laporan</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <a href="pelanggan.html" class="menu-link"><span class="icon">👥</span> Pelanggan</a>
+    </div>
+
+    <div class="menu-item">
+      <div class="menu-toggle" onclick="toggleMenu('layanan')">
+        <span class="menu-link"><span class="icon">🎧</span> Layanan</span>
+        <span class="arrow" id="arrow-layanan">▼</span>
+      </div>
+      <div class="submenu" id="submenu-layanan">
+        <a href="data-layanan.html">Data Layanan</a>
+        <a href="klaim-garansi.html">Klaim Garansi</a>
+        <a href="data-garansi.html">Data Garansi</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <a href="pengaturan.html" class="menu-link"><span class="icon">⚙️</span> Pengaturan</a>
+    </div>
+
+    <div class="menu-item">
+      <a href="logout.html" class="menu-link"><span class="icon">🚪</span> Keluar</a>
+    </div>
+  </div>
+</aside>
+    <div class="main">
+      <div class="header">
+        <div>☰</div>
+        <div class="admin-btn">👤 Admin ▾</div>
+      </div>
+
+      <div class="filter-box">
+        <select>
+          <option>Semua Merek</option>
+        </select>
+        <select>
+          <option>Semua Harga</option>
+        </select>
+        <select>
+          <option>Semua Tahun</option>
+        </select>
+        <button class="filter-button">Filter</button>
+      </div>
+
+      <div>
+        Tambah Data Mobil:
+        <button class="add-btn" onclick="alert('Navigasi ke tambah mobil')">Tambah Data Mobil</button>
+      </div>
+
+      <div class="cards">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card-actions">
+            <button class="edit" onclick="alert('Edit Toyota Innova')">✏️</button>
+            <button class="delete" onclick="alert('Hapus Toyota Innova')">🗑️</button>
+          </div>
+          <h4>Toyota Innova</h4>
+          <h2>Toyota Innova</h2>
+          <div class="price">Rp. 350.000.000</div>
+          <div class="card-details">📅 2023 &nbsp; ⚙️ Automatic &nbsp; 🛠️ 2455 CC</div>
+          <a href="#" class="btn-detail" onclick="alert('Detail Toyota Innova')">Lihat Detail</a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-actions">
+            <button class="edit" onclick="alert('Edit Honda Civic')">✏️</button>
+            <button class="delete" onclick="alert('Hapus Honda Civic')">🗑️</button>
+          </div>
+          <h4>Honda Civic</h4>
+          <h2>Honda Civic</h2>
+          <div class="price">Rp. 425.000.000</div>
+          <div class="card-details">📅 2023 &nbsp; ⚙️ Automatic &nbsp; 🛠️ 2348 CC</div>
+          <a href="#" class="btn-detail" onclick="alert('Detail Honda Civic')">Lihat Detail</a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-actions">
+            <button class="edit" onclick="alert('Edit Mitsubishi Xpander')">✏️</button>
+            <button class="delete" onclick="alert('Hapus Mitsubishi Xpander')">🗑️</button>
+          </div>
+          <h4>Mitsubishi Xpander</h4>
+          <h2>Mitsubishi Xpander</h2>
+          <div class="price">Rp. 350.000.000</div>
+          <div class="card-details">📅 2023 &nbsp; ⚙️ Automatic &nbsp; 🛠️ 2288 CC</div>
+          <a href="#" class="btn-detail" onclick="alert('Detail Mitsubishi Xpander')">Lihat Detail</a>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button disabled>Previous</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>Next</button>
+      </div>
+    </div>
+  </div>
+ 
+    <script>
+         function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("hidden");
+    }
+  function toggleMenu(menuId) {
+    const submenu = document.getElementById('submenu-' + menuId);
+    const arrow = document.getElementById('arrow-' + menuId);
+    submenu.classList.toggle('show');
+    arrow.classList.toggle('rotate');
+  }
+
+  // Tandai link aktif
+  const currentPath = window.location.pathname.split("/").pop();
+  const allLinks = document.querySelectorAll('.menu a');
+
+  allLinks.forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active');
+
+      const submenu = link.closest('.submenu');
+      if (submenu) {
+        submenu.classList.add('show');
+        const menuId = submenu.id.split('-')[1];
+        const arrow = document.getElementById('arrow-' + menuId);
+        if (arrow) arrow.classList.add('rotate');
+      }
+    }
+  });
+
+  </script>
+</body>
+</html>

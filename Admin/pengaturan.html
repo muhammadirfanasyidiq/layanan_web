@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pengaturan | Ganti Password</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f8f8f8;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+   .sidebar {
+    width: 240px;
+    background-color: #1e1c1a;
+    color: white;
+    padding: 1rem;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.hidden {
+    transform: translateX(-100%);
+    position: absolute;
+    z-index: 1000;
+  }
+
+  .sidebar h1 {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .menu-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .menu-toggle:hover {
+    background-color: #2c2a28;
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: white;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .menu-link:hover {
+    background-color: #2c2a28;
+  }
+
+  .submenu {
+    display: none;
+    flex-direction: column;
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .submenu a {
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .submenu a:hover {
+    background-color: #3d3a36;
+  }
+
+  .submenu.show {
+    display: flex;
+  }
+
+  .submenu a.active {
+    background-color: #675cff;
+  }
+
+  .icon {
+    width: 20px;
+  }
+
+  .arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+  }
+
+  .arrow.rotate {
+    transform: rotate(180deg);
+  }
+
+  @media(max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      transform: none;
+      position: relative;
+    }
+  } 
+  
+    .container {
+      display: flex;
+    }
+
+    iframe {
+      width: 240px;
+      height: 100vh;
+      border: none;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .header {
+      background-color: #675cff;
+      color: white;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .admin {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+    }
+
+    .btn-submit {
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      background: #675cff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-submit:hover {
+      background: #5744ff;
+    }
+  </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+    <h1>MobilBagus</h1>
+    <div class="menu">
+      <div class="menu-item">
+        <a href="dashboard.html" class="menu-link"><span class="icon">🏠</span> Dashboard</a>
+      </div>
+
+      <div class="menu-item">
+        <a href="manajemen-mobil.html" class="menu-link"><span class="icon">🚗</span> Manajemen Mobil</a>
+      </div>
+
+      <div class="menu-item">
+        <div class="menu-toggle" onclick="toggleMenu('penjualan')">
+          <span class="menu-link"><span class="icon">📈</span> Penjualan</span>
+          <span class="arrow" id="arrow-penjualan">▼</span>
+        </div>
+        <div class="submenu" id="submenu-penjualan">
+          <a href="data-penjualan.html">Data Penjualan</a>
+          <a href="daftar-pembayaran.html">Daftar Penjualan</a>
+          <a href="laporan.html">Laporan</a>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        <a href="pelanggan.html" class="menu-link"><span class="icon">👥</span> Pelanggan</a>
+      </div>
+
+      <div class="menu-item">
+        <div class="menu-toggle" onclick="toggleMenu('layanan')">
+          <span class="menu-link"><span class="icon">🎧</span> Layanan</span>
+          <span class="arrow" id="arrow-layanan">▼</span>
+        </div>
+        <div class="submenu" id="submenu-layanan">
+          <a href="data-layanan.html">Data Layanan</a>
+          <a href="klaim-garansi.html">Klaim Garansi</a>
+          <a href="data-garansi.html">Data Garansi</a>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        <a href="pengaturan.html" class="menu-link"><span class="icon">⚙️</span> Pengaturan</a>
+      </div>
+
+      <div class="menu-item">
+        <a href="logout.html" class="menu-link"><span class="icon">🚪</span> Keluar</a>
+      </div>
+    </div>
+  </aside>
+    <div class="main">
+      <div class="header">
+        <div>☰</div>
+        <div class="admin">👤 Admin ▾</div>
+      </div>
+
+      <div class="card">
+        <h2>Ganti Password</h2>
+        <form onsubmit="handleChangePassword(event)">
+          <div class="form-group">
+            <label for="currentPassword">Password Saat ini :</label>
+            <input type="password" id="currentPassword" placeholder="Masukan Password Saat ini" required>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">Password Baru :</label>
+            <input type="password" id="newPassword" placeholder="Masukan Password Baru" required>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Konfirmasi Password Baru :</label>
+            <input type="password" id="confirmPassword" placeholder="Masukan Ulang Password Baru" required>
+          </div>
+          <button type="submit" class="btn-submit">Ganti Password</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleChangePassword(event) {
+      event.preventDefault();
+
+      const current = document.getElementById('currentPassword').value;
+      const newPass = document.getElementById('newPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+
+      if (newPass !== confirm) {
+        alert("Password baru dan konfirmasi tidak cocok!");
+        return;
+      }
+
+      // Simulasi proses ganti password
+      alert("Password berhasil diubah!");
+      // Di sini bisa ditambahkan AJAX/fetch ke backend
+    }
+  </script>
+      <script>
+         function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("hidden");
+    }
+  function toggleMenu(menuId) {
+    const submenu = document.getElementById('submenu-' + menuId);
+    const arrow = document.getElementById('arrow-' + menuId);
+    submenu.classList.toggle('show');
+    arrow.classList.toggle('rotate');
+  }
+
+  // Tandai link aktif
+  const currentPath = window.location.pathname.split("/").pop();
+  const allLinks = document.querySelectorAll('.menu a');
+
+  allLinks.forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active');
+
+      const submenu = link.closest('.submenu');
+      if (submenu) {
+        submenu.classList.add('show');
+        const menuId = submenu.id.split('-')[1];
+        const arrow = document.getElementById('arrow-' + menuId);
+        if (arrow) arrow.classList.add('rotate');
+      }
+    }
+  });
+
+  </script>
+</body>
+</html>
